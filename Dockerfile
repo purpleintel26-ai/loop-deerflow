@@ -25,12 +25,8 @@ COPY --from=ghcr.io/astral-sh/uv:0.7.20 /uv /uvx /usr/local/bin/
 # Set working directory
 WORKDIR /app
 
-# Copy DeerFlow backend
-COPY backend ./backend
-
-# Copy config files
-COPY config.yaml ./config.yaml
-COPY skills ./skills
+# Copy entire repo (backend is at root)
+COPY . .
 
 # Install dependencies
 RUN cd backend && uv sync
