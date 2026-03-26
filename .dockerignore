@@ -57,9 +57,11 @@ tests/
 # Frontend build only needs frontend/
 # Backend build only needs backend/
 scripts/
+!scripts/start-production.sh
 logs/
 docker/
 skills/
+!skills/public/
 frontend/.next
 frontend/node_modules
 backend/.venv
