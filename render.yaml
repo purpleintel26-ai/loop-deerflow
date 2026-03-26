@@ -1,0 +1,56 @@
+#!/bin/bash
+# Deploy LOOP-DeerFlow to Render.com
+# Uses render.yaml for infrastructure-as-code
+
+services:
+  # DeerFlow Web Service
+  - type: web
+    name: loop-deerflow
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: DEERFLOW_ENV
+        value: production
+      - key: OPENROUTER_API_KEY
+        sync: false  # Set in Render dashboard
+      - key: E2B_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: loop-deerflow-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: loop-deerflow-redis
+          property: connectionString
+    healthCheckPath: /health
+
+  # Redis for task queue
+  - type: redis
+    name: loop-deerflow-redis
+    plan: starter
+    ipAllowList: []  # Allow all (internal only)
+
+  # Background worker for LangGraph
+  - type: worker
+    name: loop-deerflow-worker
+    runtime: docker
+    dockerfilePath: ./Dockerfile.worker
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: loop-deerflow-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: loop-deerflow-redis
+          property: connectionString
+
+databases:
+  - name: loop-deerflow-db
+    plan: starter
+    region: oregon
