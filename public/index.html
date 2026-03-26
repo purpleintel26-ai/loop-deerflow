@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LOOP DeerFlow - Autonomous AI System</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #0a0a0f; color: #e0e0ff; }
+        h1 { color: #a855f7; }
+        .status { background: #1a1a2e; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .endpoint { background: #16213e; padding: 10px 15px; margin: 10px 0; border-radius: 5px; font-family: monospace; }
+        .endpoint a { color: #22d3ee; text-decoration: none; }
+        .endpoint a:hover { text-decoration: underline; }
+        .healthy { color: #22c55e; }
+        .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0; }
+        .metric { background: #1a1a2e; padding: 15px; border-radius: 8px; text-align: center; }
+        .metric-value { font-size: 2em; color: #a855f7; font-weight: bold; }
+        .metric-label { color: #888; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>🚀 LOOP DeerFlow</h1>
+    <p>Autonomous AI product iteration system</p>
+    
+    <div class="status">
+        <h2>Status: <span class="healthy">● Online</span></h2>
+        <p>Last updated: <span id="time"></span></p>
+    </div>
+    
+    <div class="metrics">
+        <div class="metric">
+            <div class="metric-value">17</div>
+            <div class="metric-label">Built-in Skills</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">5</div>
+            <div class="metric-label">LOOP Skills Ready</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">✓</div>
+            <div class="metric-label">E2B Sandbox</div>
+        </div>
+    </div>
+    
+    <h2>🔗 API Endpoints</h2>
+    <div class="endpoint">
+        <a href="/health">/health</a> - Health check
+    </div>
+    <div class="endpoint">
+        <a href="/docs">/docs</a> - Swagger API Documentation
+    </div>
+    <div class="endpoint">
+        <a href="/api/skills">/api/skills</a> - List available skills
+    </div>
+    
+    <h2>📊 System Info</h2>
+    <div class="endpoint">
+        Gateway: DeerFlow API v2.0<br>
+        Runtime: Python 3.12 + FastAPI<br>
+        Database: PostgreSQL (connected)<br>
+        Cache: Redis (connected)
+    </div>
+    
+    <script>
+        document.getElementById('time').textContent = new Date().toLocaleString();
+        setInterval(() => {
+            fetch('/health').then(r => r.json()).then(d => {
+                console.log('Health:', d.status);
+            });
+        }, 30000);
+    </script>
+</body>
+</html>
